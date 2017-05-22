@@ -20,7 +20,7 @@ function NavBar(props){
         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul className="nav navbar-nav">
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/dogs">Dogs</Link></li>
+            <li><Link to="/about">About</Link></li>
             <li><Link to="/students">Students</Link></li>
           </ul>
         </div>

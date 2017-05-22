@@ -24,13 +24,11 @@ export default class StudentForm extends React.Component {
 
   render(){
     return (
-      <div className='col-md-8' >
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <label>Student Name</label>
-          <input type='text' value={this.state.student} onChange={this.handleInputChange}/>
-          <input type='submit' value='Add a Student' />
-        </form>
-      </div>
+      <form onSubmit={this.handleSubmit.bind(this)}>
+        <label>Student Name</label>
+        <input type='text' value={this.state.student} onChange={this.handleInputChange}/>
+        <input type='submit' value='Add a Student' />
+      </form>
     )
   }
 }
