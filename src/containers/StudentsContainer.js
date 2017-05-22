@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
-import {Switch, Route} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 
+import { fetchStudents, createStudent, deleteStudent }  from '../api'
 import StudentList from '../components/StudentList'
-import StudentForm from '../components/StudentForm'
-import StudentShow from '../components/StudentShow'
-
-import { fetchStudents, createStudent }  from '../api'
 
 class StudentsContainer extends Component {
 
@@ -30,19 +27,27 @@ class StudentsContainer extends Component {
       .catch(e => this.setState(prevState => ({students: prevState.students.filter(person => person.name !== name)})))
   }
 
+  handleDeleteStudent(id){
+    deleteStudent(id)
+      .then(() => {
+        this.setState(prevState => {
+          return {
+            students: prevState.students.filter(s => s.id !== id)
+          }
+        })
+        this.props.history.push('/students')
+
+      })
+  }
+
   render(){
-    return (
-      < StudentList students={this.state.students} >
-        <Switch>
-          <Route path="/students/new" render={() => <StudentForm onSubmit={this.handleAddStudent.bind(this)}/>} />
-          <Route path="/students/:id" render={({match}) => {
-            const student = this.state.students.find(student => student.id == match.params.id );
-            return < StudentShow student={student} />
-          }} />
-        </Switch>
-      </StudentList>
-    )
+      return React.createElement(StudentList, {
+        students: this.state.students,
+        onSubmit: this.handleAddStudent.bind(this),
+        onDelete: this.handleDeleteStudent.bind(this)
+      })
+
   }
 }
 
-export default StudentsContainer
+export default withRouter(StudentsContainer)

@@ -1,11 +1,14 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {Switch, Route, Link} from 'react-router-dom'
 
-import StudentForm from './StudentForm'
-import StudentShow from './StudentShow'
+import StudentForm from '../components/StudentForm'
+import StudentShow from '../components/StudentShow'
 
 function StudentList(props) {
-  const nameEls = props.students.map( (student, i) => <li key={i}><Link to={`/students/${student.id}`}>{student.name}</Link></li>)
+  const nameEls = props.students.map( (student, i) => (
+    <li key={i}><Link activeClassName='active' to={`/students/${student.id}`}>{student.name}</Link></li>
+  )
+)
 
   return (
       <div>
@@ -17,7 +20,15 @@ function StudentList(props) {
         </div>
 
         <div className='col-md-8'>
-          { props.children }
+          <Switch>
+            <Route path="/students/new" render={() => <StudentForm onSubmit={props.onSubmit}/>} />
+            <Route path="/students/:id" render={({match}) => {
+              const student = props.students.find(student => student.id == match.params.id );
+              return (
+                StudentShow({onDelete: props.onDelete, student})
+              )
+            }} />
+          </Switch>
         </div>
       </div>
   )
